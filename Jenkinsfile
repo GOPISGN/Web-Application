@@ -11,17 +11,22 @@ pipeline {
 			}
 		}
 		
-		stage('Stage 2 : Invoke HTTP Server') {
-			steps {
-				bat 'echo "Invoke HTTP Server"'
-				bat 'python -m http.server'
+		stage('Stage 2 : Lauching a web application') {
+			parallel {
+				stage('Invoke HTTP Server') {
+					steps {
+						bat 'echo "Invoke HTTP Server"'
+						bat 'python -m http.server'
+					}
+				}
+				stage('Open browser via localhost') {
+					steps {
+						bat 'echo "Open google chrome and launch index.html page"'
+						bat 'start chrome http://localhost:8000/index.html'
+					}
+				}
 			}
 		}
-		stage('Stage 3 : Open a browser and launch index.html page in localhost') {
-			steps {
-				bat 'echo "Open google chrome and launch index.html page"'
-				bat 'start chrome http://localhost:8000/index.html'
-			}
-		}
+		
 	}
 }
